@@ -22,8 +22,6 @@ bld/
 [Oo]bj/
 [Ll]og/
 
-# Visual Studio 2015/2017 cache/options directory
-.vs/
 **/wwwroot/lib/
 
 [Tt]est[Rr]esult*/
