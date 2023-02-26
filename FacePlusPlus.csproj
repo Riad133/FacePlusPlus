@@ -10,6 +10,7 @@
     <PackageReference Include="FluentValidation" Version="9.4.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.12" />
@@ -42,7 +43,6 @@
     <Folder Include="Application\Events" />
     <Folder Include="Application\Services" />
     <Folder Include="Domain" />
-    <Folder Include="Web\Contracts\Request" />
   </ItemGroup>
 
 </Project>
