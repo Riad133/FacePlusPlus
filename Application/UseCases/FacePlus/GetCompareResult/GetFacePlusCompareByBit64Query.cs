@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using FacePlusPlus.Application.Broker;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -16,10 +17,10 @@ namespace FacePlusPlus.Application.UseCases.FacePlus.GetCompareResult
 {
     public class GetFacePlusCompareByBit64Query:IRequest<Result<FacePlusCompareResponse>>
     {
-        public  byte[] Image_1 { get; set; }
-        public  byte[] Image_2 { get; set; }
+        public  IFormFile Image_1 { get; set; }
+        public  IFormFile Image_2 { get; set; }
 
-        public GetFacePlusCompareByBit64Query(byte[] image1, byte[] image2)
+        public GetFacePlusCompareByBit64Query(IFormFile image1, IFormFile image2)
         {
             Image_1 = image1;
             Image_2 = image2;
@@ -50,8 +51,8 @@ namespace FacePlusPlus.Application.UseCases.FacePlus.GetCompareResult
             {
                 // ["image_file1"] = GetBytesFromFile(file1),
                 // ["image_file2"] = GetBytesFromFile(file2)
-                ["image_file1"] = request.Image_1,
-                ["image_file2"] = request.Image_2
+                ["image_file1"] =GetBytesFromFile(request.Image_1) ,
+                ["image_file2"] = GetBytesFromFile(request.Image_2)
             };
 
             try
@@ -67,6 +68,23 @@ namespace FacePlusPlus.Application.UseCases.FacePlus.GetCompareResult
                 return Result.Failure<FacePlusCompareResponse>($"detail: {e.Message}, statusCode: 500");
             }
             return Result.Failure<FacePlusCompareResponse>("something wrong");
+        }
+        private static byte[] GetBytesFromFile(IFormFile file)
+        {
+            if (file == null)
+            {
+                return null;
+            }
+
+            using var stream = file.OpenReadStream();
+            using var outStream = new MemoryStream(1000);
+            var b = new byte[1000];
+            int n;
+            while ((n = stream.Read(b, 0, b.Length)) > 0)
+            {
+                outStream.Write(b, 0, n);
+            }
+            return outStream.ToArray();
         }
         private static async Task<Result<FacePlusCompareResponse>>PostAsync(string url, IDictionary<string, string> map, IDictionary<string, byte[]> fileMap)
         {
