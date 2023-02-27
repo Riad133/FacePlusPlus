@@ -53,6 +53,7 @@ namespace FacePlusPlus.Application.UseCases.FacePlus.GetCompareResult
             dictionary.Add("image_url1",userRequest.Image1);
             dictionary.Add("image_url2",userRequest.Image2);
             var content = new FormUrlEncodedContent(dictionary);
+           
             var response = await client.PostAsync($"{baseUrl}/compare", content);
             if (response.IsSuccessStatusCode)
             {
@@ -67,5 +68,6 @@ namespace FacePlusPlus.Application.UseCases.FacePlus.GetCompareResult
             
             return  Result.Failure<FacePlusCompareResponse>(responseContentError);
         }
+        
     }
 }

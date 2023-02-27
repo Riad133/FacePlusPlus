@@ -19,10 +19,10 @@ namespace FacePlusPlus.Web.Controllers
         }
         // GET
         [HttpPost("compare_faces")]
-        public async Task<ActionResult<FacePlusCompareResponse>> Get(
-            [FromForm] FacePlusCompareDto dto)
+        public async Task<ActionResult<FacePlusCompareFileDto>> Get(
+            [FromForm] FacePlusCompareFileDto dto)
         {
-            var result =  await _mediator.Send(new GetFacePlusCompareQuery(dto.Image_1,dto.Image_2));
+            var result =  await _mediator.Send(new GetFacePlusCompareByBit64Query(dto.Image_1,dto.Image_2));
             if (result.IsSuccess)
             {
                 return Ok(new FacePlusCompareResponse()
