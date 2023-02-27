@@ -4,6 +4,8 @@ using FacePlusPlus.Web.Contracts.Request;
 using FacePlusPlus.Web.Contracts.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using Serilog.Events;
 
 namespace FacePlusPlus.Web.Controllers
 {
@@ -22,9 +24,14 @@ namespace FacePlusPlus.Web.Controllers
         public async Task<ActionResult<FacePlusCompareFileDto>> Get(
             [FromForm] FacePlusCompareFileDto dto)
         {
-            var result =  await _mediator.Send(new GetFacePlusCompareByBit64Query(dto.Image_1,dto.Image_2));
+            var log = new LoggerConfiguration().WriteTo.File(
+                @"C:\logs\facePluslog.txt",
+                LogEventLevel.Information).CreateLogger();
+            log.Information("this is a log for entry");
+            var result =  await _mediator.Send(new GetFacePlusCompareByBit64Query(dto.img_1,dto.img_2));
             if (result.IsSuccess)
             {
+                log.Information("this is a log exit: Confidence: "+result.Value.Confidence.ToString());
                 return Ok(new FacePlusCompareResponse()
                     {
                         Status = "Success",
@@ -41,6 +48,7 @@ namespace FacePlusPlus.Web.Controllers
                 
                 );
             }
+            log.Information($"this is a log exit: error: {result.Error}");
             return BadRequest(new FacePlusCompareResponse()
             {
                 Status = "Failed",

@@ -19,7 +19,7 @@ namespace FacePlusPlus
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .SetupSerilog("qpay_identity_logs")
+                .SetupSerilog("face_compare_logs")
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
